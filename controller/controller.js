@@ -8,7 +8,7 @@ var cheerio = require("cheerio");
 var Comment = require("../models/Comment.js");
 var Article = require("../models/Article.js");
 
-router.get("/articles", function(req, res) {
+router.get("/", function(req, res) {
   res.redirect("/articles");
 });
 
