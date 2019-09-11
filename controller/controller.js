@@ -1,23 +1,24 @@
 var express = require("express");
-var router = express.Router();
-var path = require("path");
-
+//var path = require("path");
+var axios = require("axios");
 var request = require("request");
 var cheerio = require("cheerio");
+
+var router = express.Router();
 
 var Comment = require("../models/Comment.js");
 var Article = require("../models/Article.js");
 
-router.get("/", function(req, res) {
+router.get("/", function (req, res) {
   res.redirect("/articles");
 });
 
-router.get("/scrape", function(req, res) {
-  request("http://www.theverge.com", function(error, response, html) {
+router.get("/scrape", function (req, res) {
+  request("http://www.theverge.com", function (error, response, html) {
     var $ = cheerio.load(html);
     var titlesArray = [];
 
-    $(".c-entry-box--compact__title").each(function(i, element) {
+    $(".c-entry-box--compact__title").each(function (i, element) {
       var result = {};
 
       result.title = $(this)
@@ -31,11 +32,11 @@ router.get("/scrape", function(req, res) {
         if (titlesArray.indexOf(result.title) == -1) {
           titlesArray.push(result.title);
 
-          Article.count({ title: result.title }, function(err, test) {
+          Article.count({ title: result.title }, function (err, test) {
             if (test === 0) {
               var entry = new Article(result);
 
-              entry.save(function(err, doc) {
+              entry.save(function (err, doc) {
                 if (err) {
                   console.log(err);
                 } else {
@@ -54,10 +55,10 @@ router.get("/scrape", function(req, res) {
     res.redirect("/");
   });
 });
-router.get("/articles", function(req, res) {
+router.get("/articles", function (req, res) {
   Article.find()
     .sort({ _id: -1 })
-    .exec(function(err, doc) {
+    .exec(function (err, doc) {
       if (err) {
         console.log(err);
       } else {
@@ -67,8 +68,8 @@ router.get("/articles", function(req, res) {
     });
 });
 
-router.get("/articles-json", function(req, res) {
-  Article.find({}, function(err, doc) {
+router.get("/articles-json", function (req, res) {
+  Article.find({}, function (err, doc) {
     if (err) {
       console.log(err);
     } else {
@@ -77,8 +78,8 @@ router.get("/articles-json", function(req, res) {
   });
 });
 
-router.get("/clearAll", function(req, res) {
-  Article.remove({}, function(err, doc) {
+router.get("/clearAll", function (req, res) {
+  Article.remove({}, function (err, doc) {
     if (err) {
       console.log(err);
     } else {
@@ -88,7 +89,7 @@ router.get("/clearAll", function(req, res) {
   res.redirect("/articles-json");
 });
 
-router.get("/readArticle/:id", function(req, res) {
+router.get("/readArticle/:id", function (req, res) {
   var articleId = req.params.id;
   var hbsObj = {
     article: [],
@@ -97,16 +98,16 @@ router.get("/readArticle/:id", function(req, res) {
 
   Article.findOne({ _id: articleId })
     .populate("comment")
-    .exec(function(err, doc) {
+    .exec(function (err, doc) {
       if (err) {
         console.log("Error: " + err);
       } else {
         hbsObj.article = doc;
         var link = doc.link;
-        request(link, function(error, response, html) {
+        request(link, function (error, response, html) {
           var $ = cheerio.load(html);
 
-          $(".l-col__main").each(function(i, element) {
+          $(".l-col__main").each(function (i, element) {
             hbsObj.body = $(this)
               .children(".c-entry-content")
               .children("p")
@@ -119,7 +120,7 @@ router.get("/readArticle/:id", function(req, res) {
       }
     });
 });
-router.post("/comment/:id", function(req, res) {
+router.post("/comment/:id", function (req, res) {
   var user = req.body.name;
   var content = req.body.comment;
   var articleId = req.params.id;
@@ -131,7 +132,7 @@ router.post("/comment/:id", function(req, res) {
 
   var newComment = new Comment(commentObj);
 
-  newComment.save(function(err, doc) {
+  newComment.save(function (err, doc) {
     if (err) {
       console.log(err);
     } else {
@@ -142,7 +143,7 @@ router.post("/comment/:id", function(req, res) {
         { _id: req.params.id },
         { $push: { comment: doc._id } },
         { new: true }
-      ).exec(function(err, doc) {
+      ).exec(function (err, doc) {
         if (err) {
           console.log(err);
         } else {

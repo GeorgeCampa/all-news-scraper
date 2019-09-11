@@ -2,7 +2,6 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var logger = require("morgan");
 
-//initialize Express app
 var express = require("express");
 var app = express();
 
@@ -14,7 +13,7 @@ app.use(
 );
 
 app.use(express.static(process.cwd() + "/public"));
-//Require set up handlebars
+
 var exphbs = require("express-handlebars");
 app.engine(
   "handlebars",
@@ -26,9 +25,11 @@ app.set("view engine", "handlebars");
 
 //connecting to MongoDB
 //mongoose.connect("mongodb://localhost/scraped_news");
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost/scraper_news";
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+//const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper_news";
+//mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/all-news-scraper";
+mongoose.connect(MONGODB_URI);
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -39,7 +40,7 @@ db.once("open", function() {
 var routes = require("./controller/controller.js");
 app.use("/", routes);
 //Create localhost port
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 app.listen(port, function() {
   console.log("Listening on PORT " + port);
 });
