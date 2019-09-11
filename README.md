@@ -1,6 +1,8 @@
 # all-news-scraper
 
-Create a web app that lets users view and leave comments on the latest news.
+Create a web app that lets users view and leave comments on the latest news.Mongoose and Cheerio muscles to scrape news from www.theverge.com
+
+
 
 Deployed to Heroku, with a set up in mLab provision.
 
