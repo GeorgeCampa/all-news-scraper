@@ -12,10 +12,13 @@ Deployed on Heroku, https://pacific-spire-31161.herokuapp.com/
 
 Deployed to Heroku, with a set up in mLab provision.
 <img width="1020" alt="Screen Shot 2019-09-10 at 10 31 54 PM" src="https://user-images.githubusercontent.com/49299319/64671478-6d09a700-d41d-11e9-8939-f3a76740da9b.png">
+<<<<<<< HEAD
 
 
 <img width="1020" alt="Screen Shot 2019-09-10 at 10 31 54 PM" src="https://user-images.githubusercontent.com/49299319/64671478-6d09a700-d41d-11e9-8939-f3a76740da9b.png">
 
+=======
+>>>>>>> 272b4b0ae033369f655a4c5bda2bc00a6e68d9cd
 
 Runing npm packages:
 Run npm init
