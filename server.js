@@ -40,7 +40,7 @@ mongoose.connect(MONGODB_URI);
 
 
 var routes = require("./controller/controller.js");
-app.use("/", routes);
+app.use(routes);
 //Create localhost port
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
