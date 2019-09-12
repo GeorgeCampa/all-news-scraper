@@ -1,6 +1,7 @@
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var logger = require("morgan");
+var db = require("./models");
 
 var express = require("express");
 var app = express();
@@ -29,13 +30,13 @@ app.set("view engine", "handlebars");
 //mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/all-news-scraper";
-mongoose.connect("mongodb://<dbuser>:<dbpassword>@ds353007.mlab.com:53007/heroku_p3v2m0z5");
+mongoose.connect(MONGODB_URI);
 
-var db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function() {
-  console.log("Connected to Mongoose!");
-});
+
+// db.on("error", console.error.bind(console, "connection error:"));
+// db.once("open", function() {
+//   console.log("Connected to Mongoose!");
+// });
 
 
 var routes = require("./controller/controller.js");
