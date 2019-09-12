@@ -29,7 +29,7 @@ app.set("view engine", "handlebars");
 //mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/all-news-scraper";
-mongoose.connect(MONGODB_URI);
+mongoose.connect("mongodb://<dbuser>:<dbpassword>@ds353007.mlab.com:53007/heroku_p3v2m0z5");
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
